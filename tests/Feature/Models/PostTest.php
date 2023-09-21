@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Post;
+use App\Models\Tag;
 use App\Models\User;
 
 class PostTest extends TestCase
@@ -27,5 +28,12 @@ class PostTest extends TestCase
         $post = Post::factory()->for(User::factory())->create();
         $this->assertTrue(isset($post->user->id));
         $this->assertTrue($post->user instanceof User);
+    }
+
+    public function testPostRelationshipWithTag(){
+        $count = rand(1,10);
+        $post = Post::factory()->forTags()->create();
+        $this->assertCount($count,$post->tags);
+        $this->assertTrue($post->tags->first() instanceof Tag);
     }
 }
